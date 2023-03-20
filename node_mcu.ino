@@ -32,5 +32,4 @@ void loop() {
     Firebase.setInt("Line2", 1);
     digitalWrite(5, Firebase.getInt("Line1"));
     delay(500);
-
 }
