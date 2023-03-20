@@ -51,7 +51,7 @@
     
 </body>
 <script type="module">
-    import secrets from './keys.js'
+    import secrets from '../modules/keys.js'
     const firebaseConfig = {
         apiKey: secrets.firebase.apiKey,
         authDomain: secrets.firebase.authDomain,
@@ -76,11 +76,6 @@
     }); 
 
     db.ref('Line1').set(1) // to set some line value
-
-    
-
-
-
 
 </script>
 
