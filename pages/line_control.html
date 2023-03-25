@@ -12,9 +12,10 @@
 
 
 <body class="h-screen w-screen">
-
+    
     <div class="container w-full h-full flex flex-col text-center">
-        <div class="overflow-x-auto">
+        <div class="app-name text-3xl h-1/3 flex flex-col justify-center">Line Control</div>
+        <div class="flex flex-col justify-center mx-auto gap-5">
             <table class="table w-full">
               <!-- head -->
               <thead>
@@ -24,29 +25,26 @@
                 </tr>
               </thead>
               <tbody>
-                <!-- row 1 -->
                 <tr>
                   <th>1</th>
-                  <td><input type="checkbox" class="toggle toggle-warning" checked /></td>
+                  <td><input id="Line1" type="checkbox" class="chk toggle toggle-warning" checked /></td>
                 </tr>
-                <!-- row 2 -->
                 <tr>
                   <th>2</th>
-                  <td><input type="checkbox" class="toggle toggle-warning" checked /></td>
+                  <td><input id="Line2" type="checkbox" class="chk toggle toggle-warning" checked /></td>
                 </tr>
-                <!-- row 3 -->
                 <tr>
                   <th>3</th>
-                  <td><input type="checkbox" class="toggle toggle-warning" checked /></td>
+                  <td><input id="Line3" type="checkbox" class="chk toggle toggle-warning" checked /></td>
                 </tr>
-                <!-- row 4 -->
                 <tr>
                   <th>4</th>
-                  <td><input type="checkbox" class="toggle toggle-warning" checked /></td>
+                  <td><input id="Line4" type="checkbox" class="chk toggle toggle-warning" checked /></td>
                 </tr>
               </tbody>
             </table>
           </div>
+
     </div>
 </body>
 <script type="module">
@@ -64,17 +62,29 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    var lines = {}
+
+    Array.from(document.getElementsByClassName("chk")).forEach(function(ele, i) {
+        var lines = localStorage.getItem('ctrl_lines');
+        if(lines[i] == false){
+            ele.disabled = true;
+        }
+    });
+
+    Array.from(document.getElementsByClassName("chk")).forEach(function(ele, i) {
+        ele.addEventListener('change', (e) => {
+            const changed_line = e.target.id;
+            db.ref(changed_line).set(e.target.checked);
+        })
+    });
 
     db.ref('/').on('value', (snapshot) => {
-            console.log(snapshot.val());
-            lines = snapshot.val() // line assigned values
-            console.log('lines', lines);
+            const lines = snapshot.val(); // line assigned values
+            for(const key in lines){
+                document.getElementById(key).checked = lines[key];
+            }
         }, (errorObject) => {
         console.log('The read failed: ' + errorObject.name);
     }); 
-
-    db.ref('Line2').set(15) // to set some line value
 
 </script>
 

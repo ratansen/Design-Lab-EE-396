@@ -91,10 +91,14 @@
         
         const data = {}
         
-        const lines = [false, false, false, false]
-        
+        let lines = "0000"
+        console.log(typeof lines);
         Array.from(document.getElementsByClassName("checkbox")).forEach(function(ele, i) {
-            lines[i] = ele.checked;
+            if(ele.checked){
+                lines = lines.split('');
+                lines[i] = '1';
+                lines = lines.join('');
+            }
         });
         
         data.passcode = document.getElementById('password').value
