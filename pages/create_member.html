@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create User</title>
+    <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
+    <!-- <script type="module" src="./keys.js"></script> -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@2.51.4/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+<body class="h-screen w-screen">
+
+    <div class="container w-full h-full flex flex-col text-center">
+        <div class="app-name text-3xl h-1/5 flex flex-col justify-center">Create Member</div>
+        <div class="flex flex-col justify-center mx-auto gap-5">
+            <div class="form-control w-full max-w-xs">
+                <label class="label">
+                  <span class="label-text">Member ID</span>
+                </label>
+                <input id="memberID" type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" /><br>
+
+                <label class="label">
+                  <span class="label-text">Password</span>
+                </label>
+                <input id="password" type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" />
+
+                <br>
+
+                <label class="label">
+                  <span class="label-text">Control Lines</span>
+                </label>
+
+                <label class="cursor-pointer label">
+                    <span class="label-text">Line 1</span>
+                    <input id="line1" type="checkbox" class="checkbox checkbox-info" />
+                </label>
+                <label class="cursor-pointer label">
+                    <span class="label-text">Line 2</span>
+                    <input id="line2" type="checkbox" class="checkbox checkbox-info" />
+                </label>
+                <label class="cursor-pointer label">
+                    <span class="label-text">Line 3</span>
+                    <input id="line3" type="checkbox" class="checkbox checkbox-info" />
+                </label>
+                <label class="cursor-pointer label">
+                    <span class="label-text">Line 4</span>
+                    <input id="line4" type="checkbox" class="checkbox checkbox-info" />
+                </label>
+                <br><br>
+                <button id="create" class="btn btn-outline btn-success">Create Member</button>
+            </div>
+        </div>
+
+    </div>
+    
+
+    
+    
+</body>
+
+<script type="module">
+    import secrets from '../modules/keys.js'
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";  
+    import { getFirestore, getDocs, getDoc, doc, setDoc, collection } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+    const firebaseConfig = {
+        apiKey: secrets.firebase.apiKey,
+        authDomain: secrets.firebase.authDomain,
+        databaseURL: secrets.firebase.databaseURL,
+        projectId: secrets.firebase.projectId,
+        storageBucket: secrets.firebase.storageBucket,
+        messagingSenderId: secrets.firebase.messagingSenderId,
+        appId: secrets.firebase.appId,
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore();
+    
+    const create = document.getElementById("create");
+
+    create.addEventListener('click', async(e) => {
+
+        const memberID = document.getElementById('memberID').value
+
+        
+        const data = {}
+        
+        const lines = [false, false, false, false]
+        
+        Array.from(document.getElementsByClassName("checkbox")).forEach(function(ele, i) {
+            lines[i] = ele.checked;
+        });
+        
+        data.passcode = document.getElementById('password').value
+        data.ctrl_lines = lines
+        
+        const docRef = doc(db, "members", memberID);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            console.log("Member ID already exists. Try again.");
+        } else {
+            console.log("Member ID is unique. Member can be created.");
+            setDoc(docRef, data)
+                .then(() => {
+                    console.log("Member has been created successfully");
+                    // redirect
+                    window.location = '../index.html';
+                })
+                .catch(error => {
+                    console.log(error);
+            })
+
+            // redirect to home
+        }
+    })
+</script>
+</html>

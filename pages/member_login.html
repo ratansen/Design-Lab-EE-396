@@ -17,15 +17,65 @@
     <div class="container w-full h-full flex flex-col text-center">
         <div class="app-name text-3xl h-1/3 flex flex-col justify-center">Member Login</div>
         <div class="flex flex-col justify-center mx-auto gap-5">
-            <input type="text" placeholder="Member ID" class="input input-bordered w-full max-w-xs" />
-            <input type="text" placeholder="Password" class="input input-bordered w-full max-w-xs" /><br>
-            <button class="btn btn-outline btn-success">Login</button>
+            <input id="memberID" type="text" placeholder="Member ID" class="input input-bordered w-full max-w-xs" />
+            <input id="password" type="text" placeholder="Password" class="input input-bordered w-full max-w-xs" /><br>
+            <button id="login" class="btn btn-outline btn-success">Login</button>
         </div>
     </div>
     
 </body>
 
-<script>
+<script type="module">
+    import secrets from '../modules/keys.js'
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";  
+    import { getFirestore, getDocs, getDoc, doc, setDoc, collection } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: secrets.firebase.apiKey,
+        authDomain: secrets.firebase.authDomain,
+        databaseURL: secrets.firebase.databaseURL,
+        projectId: secrets.firebase.projectId,
+        storageBucket: secrets.firebase.storageBucket,
+        messagingSenderId: secrets.firebase.messagingSenderId,
+        appId: secrets.firebase.appId,
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore();
+
+    document.getElementById('login').addEventListener('click', async(e) => {
+        
+        // clear local storage
+
+        localStorage.removeItem('memberID');
+        localStorage.removeItem('ctrl_lines');
+
+
+        const memberID = document.getElementById('memberID').value;
+        const password = document.getElementById('password').value;
+
+        const docRef = doc(db, "members", memberID);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            if(docSnap.data().passcode === password){
+                localStorage.setItem('memberID', memberID);
+                localStorage.setItem('ctrl_lines', docSnap.data().ctrl_lines);
+                console.log("Logged in successfully");
+                // redirect
+                window.location = './line_control.html';
+            }
+            else{
+
+                console.log("Incorrect password");
+            }
+        } else {
+            console.log("No such member exists.");
+        }
+    })
+
+
+    
+
 
 </script>
 
