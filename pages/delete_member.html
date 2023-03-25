@@ -67,11 +67,12 @@
         
         const docRef = doc(db, "members", memberID);
         const docSnap = await getDoc(docRef);
-
+        
         if (docSnap.exists()) {
             await deleteDoc(docRef);
             console.log("Member deleted successfully");
             // redirect
+            window.location = '../index.html';
         } else {
             console.log("Member ID not found!");
         }
