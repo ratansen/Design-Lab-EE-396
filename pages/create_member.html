@@ -92,7 +92,7 @@
         const data = {}
         
         let lines = "0000"
-        console.log(typeof lines);
+
         Array.from(document.getElementsByClassName("checkbox")).forEach(function(ele, i) {
             if(ele.checked){
                 lines = lines.split('');
@@ -109,11 +109,12 @@
 
         if (docSnap.exists()) {
             console.log("Member ID already exists. Try again.");
+            alert("Member ID already exists. Try again.");
         } else {
             console.log("Member ID is unique. Member can be created.");
             setDoc(docRef, data)
                 .then(() => {
-                    console.log("Member has been created successfully");
+                    alert("Member has been created successfully");
                     // redirect
                     window.location = '../';
                 })
