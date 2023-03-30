@@ -4,8 +4,8 @@
 // Set these to run example.
 #define FIREBASE_HOST "circuit-breaker-a6f85-default-rtdb.firebaseio.com"
 #define FIREBASE_AUTH "bhysAkLmibu0untyZcEQtftIko4L1Ts4cQ4IJrN4"
-#define WIFI_SSID "TP-Link_732C"
-#define WIFI_PASSWORD "82853433"
+#define WIFI_SSID "Nirupama"
+#define WIFI_PASSWORD "mikk0355"
 
 #define LINE_1 D1
 #define LINE_2 D2
@@ -35,7 +35,11 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-    Serial.println(Firebase.getBool("Line1"));
+    Serial.print(Firebase.getBool("Line1"));
+    Serial.print(Firebase.getBool("Line2"));
+    Serial.print(Firebase.getBool("Line3"));
+    Serial.print(Firebase.getBool("Line4"));
+    Serial.println();
     digitalWrite(LINE_1, Firebase.getBool("Line1"));
     digitalWrite(LINE_2, Firebase.getBool("Line2"));
     digitalWrite(LINE_3, Firebase.getBool("Line3"));
