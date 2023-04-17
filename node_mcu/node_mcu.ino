@@ -40,9 +40,9 @@ void loop() {
     Serial.print(Firebase.getBool("Line3"));
     Serial.print(Firebase.getBool("Line4"));
     Serial.println();
-    digitalWrite(LINE_1, Firebase.getBool("Line1"));
-    digitalWrite(LINE_2, Firebase.getBool("Line2"));
-    digitalWrite(LINE_3, Firebase.getBool("Line3"));
-    digitalWrite(LINE_4, Firebase.getBool("Line4"));
+    digitalWrite(LINE_1, !Firebase.getBool("Line1"));
+    digitalWrite(LINE_2, !Firebase.getBool("Line2"));
+    digitalWrite(LINE_3, !Firebase.getBool("Line3"));
+    digitalWrite(LINE_4, !Firebase.getBool("Line4"));
     delay(500);
 }

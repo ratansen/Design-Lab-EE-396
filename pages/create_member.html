@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create User</title>
     <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- <script type="module" src="./keys.js"></script> -->
     <link
       href="https://cdn.jsdelivr.net/npm/daisyui@2.51.4/dist/full.css"
@@ -29,7 +30,7 @@
                 <label class="label">
                   <span class="label-text">Password</span>
                 </label>
-                <input id="password" type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" />
+                <input id="password" type="password" placeholder="Type here" class="input input-bordered w-full max-w-xs" />
 
                 <br>
 
@@ -67,6 +68,8 @@
 
 <script type="module">
     import secrets from '../modules/keys.js'
+    var SHA256 = window.CryptoJS.SHA256;
+
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";  
     import { getFirestore, getDocs, getDoc, doc, setDoc, collection } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
     const firebaseConfig = {
@@ -101,7 +104,8 @@
             }
         });
         
-        data.passcode = document.getElementById('password').value
+        const hash = SHA256(document.getElementById('password').value).toString();
+        data.passcode = hash
         data.ctrl_lines = lines
         
         const docRef = doc(db, "members", memberID);

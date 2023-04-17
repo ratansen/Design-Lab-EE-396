@@ -68,6 +68,11 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
+    if(!localStorage.getItem('ctrl_lines')){
+        // redirect
+        window.location = '../';
+    }
+
 
     Array.from(document.getElementsByClassName("chk")).forEach(function(ele, i) {
         var lines = localStorage.getItem('ctrl_lines');
