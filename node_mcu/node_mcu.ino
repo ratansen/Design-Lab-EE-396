@@ -11,21 +11,25 @@
 #define LINE_2 D2
 #define LINE_3 D3
 #define LINE_4 D4
+#define CONNECT D5
+
 void setup() {
     pinMode(LINE_1, OUTPUT);
     pinMode(LINE_2, OUTPUT);
     pinMode(LINE_3, OUTPUT);
     pinMode(LINE_4, OUTPUT);
+    pinMode(CONNECT, OUTPUT);
     Serial.begin(115200);
   
     // connect to wifi.
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
     Serial.print("connecting");
     while (WiFi.status() != WL_CONNECTED) {
-      Serial.print(".=");
+      Serial.print(".");
       delay(500);
     }
     Serial.println();
+    digitalWrite(CONNECT, 1);
     Serial.print("connected: ");
     Serial.println(WiFi.localIP());
     
