@@ -52,18 +52,6 @@
             logout
         </span>
     </div>
-    <div class="text-sm toast toast-start">
-        <div class="alert alert-success" id="success" style="display: none;">
-          <div>
-            <span>Success</span>
-          </div>
-        </div>
-        <div class="alert alert-error" id="failed" style="display: none;">
-          <div>
-            <span>Failed</span>
-          </div>
-        </div>
-    </div>
 </body>
 <script type="module">
     import secrets from '../modules/keys.js'
@@ -96,35 +84,6 @@
     Array.from(document.getElementsByClassName("chk")).forEach(function(ele, i) {
         ele.addEventListener('change', (e) => {
             const changed_line = e.target.id;
-            if(e.target.checked){ // turning on
-                const p = prompt('Enter password');
-                db.ref('/').on('value', (snapshot) => {
-                    const lines = snapshot.val();
-                    if(lines["p_" + changed_line] === p){
-                        db.ref(changed_line).set(true);
-                        // const msg = document.getElementById('success');
-                        // msg.style.display = 'block';
-                        // setTimeout(() => {
-                        //     msg.style.display = 'none';
-                        // }, 500);
-                        e.target.checked = true;
-                    }
-                    else{
-                        e.target.checked = false;
-                        // const msg = document.getElementById('failed');
-                        // msg.style.display = 'block';
-                        // setTimeout(() => {
-                        //     msg.style.display = 'none';
-                        // }, 500);
-                    }
-                })
-            }
-            else{  // turning off
-                const p = prompt('Enter password to break the circuit');
-                console.log("came in turning off");
-                db.ref("p_" + changed_line).set(p);
-                e.target.checked = false;
-            }
             db.ref(changed_line).set(e.target.checked);
         })
     });
@@ -132,8 +91,7 @@
     db.ref('/').on('value', (snapshot) => {
             const lines = snapshot.val(); // line assigned values
             for(const key in lines){
-                const ele = document.getElementById(key);
-                if(ele) ele.checked = lines[key];
+                document.getElementById(key).checked = lines[key];
             }
         }, (errorObject) => {
         console.log('The read failed: ' + errorObject.name);
