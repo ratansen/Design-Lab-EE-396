@@ -115,7 +115,7 @@
                     }
                     else{
                         e.target.checked = false;
-                        db.ref(changed_line).remove()
+                        db.ref("p_" + changed_line).remove()
                         // const msg = document.getElementById('failed');
                         // msg.style.display = 'block';
                         // setTimeout(() => {
