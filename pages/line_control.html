@@ -91,7 +91,8 @@
     db.ref('/').on('value', (snapshot) => {
             const lines = snapshot.val(); // line assigned values
             for(const key in lines){
-                document.getElementById(key).checked = lines[key];
+                const ele = document.getElementById(key);
+                if(ele) ele.checked = lines[key];
             }
         }, (errorObject) => {
         console.log('The read failed: ' + errorObject.name);
